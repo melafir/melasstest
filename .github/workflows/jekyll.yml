@@ -1,0 +1,24 @@
+name: Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2     
+      
+    - name: Change base-tag in index.html from / to the necessary
+      run: sed -i 's/<base href="\/" \/>/<base href="\/melasstest\/" \/>/g' ./index.html
+      
+    - name: Add .nojekyll file
+      run: touch ./.nojekyll
+      
+    - uses: JamesIves/github-pages-deploy-action@4.1.4
+      name: gh-pages publish
+      with:
+        branch: gh-pages
+        folder: ./
